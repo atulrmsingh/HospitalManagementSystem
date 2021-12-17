@@ -36,7 +36,7 @@ public class App {
 		switch (val) {
 
 		case 1:
-			addDoctor();
+			ui.addDoctor(drrepo);
 			break;
 		case 2:
 			break;
@@ -48,7 +48,7 @@ public class App {
 			ui.getAllDoctors(drrepo);
 			break;
 		case 6:
-			addPatient();
+			ui.addPatient(patRepo);
 			break;
 		case 7:
 			break;
@@ -60,7 +60,7 @@ public class App {
 			ui.getAllPatients(patRepo);
 			break;
 		case 11:
-			addAppointment();
+			ui.addAppointment(drrepo, appRepo, patRepo);
 			break;
 		case 12:
 			break;
@@ -77,85 +77,6 @@ public class App {
 		default:
 			System.out.println("Invalid Choice .. Try Again.");
 		}
-	}
-
-	public void addDoctor() {
-		Doctor dr = new Doctor();
-		System.out.println("enter doctor id");
-		dr.id = sc.next();
-		System.out.println("enter doctor name");
-		dr.name = sc.next();
-		System.out.println("enter doctor Specialist");
-		dr.specialist = sc.next();
-		System.out.println("enter doctor mobile");
-		dr.mobile = sc.nextLong();
-		System.out.println("enter email");
-		dr.email = sc.next();
-
-		dr.availability = new HashMap();
-		dr.availability.put(Doctor.WeekDays.SUNDAY, " 10 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.MONDAY, " 11 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.TUESDAY, " 12 am to 1 pm");
-		dr.availability.put(Doctor.WeekDays.WEDNESDAY, " 10 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.THURSDAY, " 10 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.FRIDAY, " 10 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.SATURDAY, " 10 am to 12 pm");
-
-		drrepo.add(dr);
-
-	}
-
-	public void addPatient() {
-		Patient pt = new Patient();
-		System.out.println("enter patient id ");
-		pt.id = sc.next();
-		System.out.println("enter patient name ");
-		pt.name = sc.next();
-		System.out.println("enter patient age ");
-		pt.age = sc.nextInt();
-		System.out.println("enter patient gender M/F ");
-		String gen = sc.next();
-		if (gen.equalsIgnoreCase("M")) {
-			pt.gender = Gender.Male;
-		} else if (gen.equalsIgnoreCase("F")) {
-			pt.gender = Gender.Female;
-		} else {
-			pt.gender = Gender.Others;
-		}
-
-		System.out.println("enter patient mobile ");
-		pt.mobile = sc.nextLong();
-		System.out.println("enter patient email ");
-		pt.email = sc.next();
-		System.out.println("enter patient city ");
-		pt.city = sc.next();
-		System.out.println("enter patient disease ");
-		pt.Disease = sc.next();
-
-		// PatientRepo ptrepo = new PatientRepo();
-		patRepo.add(pt);
-	}
-
-	public void addAppointment() {
-
-		Appointment apt = new Appointment();
-		System.out.println("enter appointment id");
-		apt.appointmentId = sc.next();
-		System.out.println("enter doctor id");
-		apt.doctorId = sc.next();
-		System.out.println("enter patient id");
-		apt.patientId = sc.next();
-		System.out.println("enter date in DD-MM-YYYY format");
-		String dateInString = sc.next();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		try {
-			Date date = formatter.parse(dateInString);
-			apt.appointmentDate = date;
-		} catch (ParseException e) {
-
-			System.out.println("Invalid Date");
-		}
-		appRepo.add(apt);
 	}
 
 }
