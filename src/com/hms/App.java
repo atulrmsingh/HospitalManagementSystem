@@ -12,10 +12,10 @@ import com.hms.Patient.Gender;
 
 public class App {
 	Scanner sc = new Scanner(System.in);
-	DoctorRepo drrepo = new DoctorRepo();
-	AppointmentRepo appRepo = new AppointmentRepo();
-	PatientRepo patRepo = new PatientRepo();
-	static UserInterface ui = new UserInterface();
+	DoctorRepo drrepo = DoctorRepo.getInstance();
+	AppointmentRepo appRepo = AppointmentRepo.getInstance();
+	PatientRepo patRepo = PatientRepo.getInstance();
+	static UserInterface ui = UserInterface.getInstance();
 
 	public static void main(String[] args) {
 		int count = 16;
@@ -39,28 +39,74 @@ public class App {
 			ui.addDoctor(drrepo);
 			break;
 		case 2:
+			System.out.println("Enter the doctor id to remove that doctor");
+			String doctorid = sc.next();
+			Doctor dr = drrepo.getDoctor(doctorid);
+			if (dr != null) {
+				drrepo.remove(dr);
+				System.out.println("Doctor removed");
+			} else {
+				System.out.println("doctor not found");
+			}
+
 			break;
 		case 3:
 			break;
 		case 4:
+			System.out.println("Enter doctor id to update");
+			String id1 = sc.next();
+			Doctor dr1 = drrepo.getDoctor(id1);
+			if (dr1 != null) {
+				ui.updateDoctorDetails(drrepo,dr1);
+			} else {
+				System.out.println("doctor not found");
+			}
+
 			break;
 		case 5:
-			ui.getAllDoctors(drrepo);
+			drrepo.getAllDoctors();
 			break;
 		case 6:
 			ui.addPatient(patRepo);
 			break;
 		case 7:
+			System.out.println("enter patient id to remove patient");
+			String patientId = sc.next();
+			Patient pt = patRepo.getPatient(patientId);
+			if (pt != null) {
+				patRepo.remove(pt);
+				System.out.println("Patient removed");
+			} else {
+				System.out.println("Patient not found");
+			}
+
 			break;
 		case 8:
+			System.out.println("enter patient id to check");
+			String id = sc.next();
+			Patient pat = patRepo.getPatient(id);
+			if (pat != null) {
+				System.out.println(pat);
+			} else {
+				System.out.println("Patient not found");
+			}
 			break;
 		case 9:
+			System.out.println("Enter Patient id to update");
+			String pid = sc.next();
+			Patient pt1 = patRepo.getPatient(pid);
+			if (pt1 != null) {
+				ui.updatePatientDetails(patRepo,pt1);
+			} else {
+				System.out.println("patient not found");
+			}
+
 			break;
 		case 10:
-			ui.getAllPatients(patRepo);
+			patRepo.getAllPatients();
 			break;
 		case 11:
-			ui.addAppointment(drrepo, appRepo, patRepo);
+			ui.addAppointment(drrepo, patRepo,appRepo);
 			break;
 		case 12:
 			break;
@@ -69,7 +115,7 @@ public class App {
 		case 14:
 			break;
 		case 15:
-			ui.getAllAppointments(appRepo);
+			appRepo.getAllAppointments();
 			break;
 		case 16:
 			System.out.println("application closed");
