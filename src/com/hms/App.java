@@ -11,6 +11,7 @@ import java.util.Scanner;
 import com.hms.Patient.Gender;
 
 public class App {
+	//final static int EXIT = 16;
 	Scanner sc = new Scanner(System.in);
 	DoctorRepo drrepo = DoctorRepo.getInstance();
 	AppointmentRepo appRepo = AppointmentRepo.getInstance();
@@ -18,16 +19,14 @@ public class App {
 	static UserInterface ui = UserInterface.getInstance();
 
 	public static void main(String[] args) {
-		int count = 16;
 		int result;
-
 		App app = new App();
 		do {
 			result = ui.showMainMenue();
 
 			app.handleUserSelection(result);
 
-		} while (result != count);
+		} while (result != Constant.EXIT);
 
 	}
 
@@ -57,7 +56,7 @@ public class App {
 			String id1 = sc.next();
 			Doctor dr1 = drrepo.getDoctor(id1);
 			if (dr1 != null) {
-				ui.updateDoctorDetails(drrepo,dr1);
+				ui.updateDoctorDetails(drrepo, dr1);
 			} else {
 				System.out.println("doctor not found");
 			}
@@ -96,7 +95,7 @@ public class App {
 			String pid = sc.next();
 			Patient pt1 = patRepo.getPatient(pid);
 			if (pt1 != null) {
-				ui.updatePatientDetails(patRepo,pt1);
+				ui.updatePatientDetails(patRepo, pt1);
 			} else {
 				System.out.println("patient not found");
 			}
@@ -106,18 +105,19 @@ public class App {
 			patRepo.getAllPatients();
 			break;
 		case 11:
-			ui.addAppointment(drrepo, patRepo,appRepo);
+			ui.addAppointment(drrepo, patRepo, appRepo);
 			break;
 		case 12:
 			break;
 		case 13:
 			break;
 		case 14:
+			ui.updateAppointmentDetails(drrepo, patRepo, appRepo);
 			break;
 		case 15:
-			appRepo.getAllAppointments();
+			appRepo.getAllAppointments(drrepo, patRepo);
 			break;
-		case 16:
+		case Constant.EXIT:
 			System.out.println("application closed");
 			break;
 		default:

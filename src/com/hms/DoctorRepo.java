@@ -1,11 +1,13 @@
 package com.hms;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DoctorRepo {
 	private static DoctorRepo instance;
-	public List<Doctor> doctorList = new ArrayList<Doctor>();
+	public Set<Doctor> doctorList = new HashSet<Doctor>();
 
 	private DoctorRepo() {
 
@@ -27,8 +29,8 @@ public class DoctorRepo {
 	}
 
 	public boolean isDoctorAvailable(String id) {
-		for (int i = 0; i < doctorList.size(); i++) {
-			if (doctorList.get(i).id.equals(id)) {
+		for (Doctor dr : doctorList) {
+			if (dr.id.equals(id)) {
 				return true;
 			}
 		}
@@ -36,9 +38,9 @@ public class DoctorRepo {
 	}
 
 	public Doctor getDoctor(String id) {
-		for (int i = 0; i < doctorList.size(); i++) {
-			if (doctorList.get(i).id.equals(id)) {
-				return doctorList.get(i);
+		for (Doctor dr : doctorList) {
+		if(dr.id.equals(id)) {
+				return dr;
 			}
 		}
 		return null;
@@ -46,8 +48,8 @@ public class DoctorRepo {
 
 	public void getAllDoctors() {
 		if (!doctorList.isEmpty()) {
-			for (int i = 0; i < doctorList.size(); i++) {
-				System.out.println(doctorList.get(i));
+			for (Doctor dr : doctorList) {
+				System.out.println(dr);
 			}
 		} else {
 			System.out.println("no doctor found");

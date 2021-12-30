@@ -1,15 +1,17 @@
 package com.hms;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.hms.Patient.Gender;
 
 public class PatientRepo {
 	Scanner sc = new Scanner(System.in);
 	private static PatientRepo instance;
-	List<Patient> patientList = new ArrayList<Patient>();
+	Set<Patient> patientList = new HashSet<Patient>();
 
 	private PatientRepo() {
 
@@ -28,13 +30,12 @@ public class PatientRepo {
 		patientList.add(pt);
 	}
 
-	public List<Patient> getAllPatient() {
+	public Set<Patient> getAllPatient() {
 		return patientList;
 	}
 
 	public boolean isPatientAvailable(String id) {
-		for (int i = 0; i < patientList.size(); i++) {
-			Patient pt = (Patient) patientList.get(i);
+		for (Patient pt : patientList) {
 			if (pt.id.equals(id)) {
 				return true;
 			}
@@ -58,8 +59,8 @@ public class PatientRepo {
 	}
 
 	public void getAllPatients() {
-		for (int i = 0; i < patientList.size(); i++) {
-			System.out.println(patientList.get(i));
+		for (Patient pt : patientList) {
+			System.out.println(pt);
 		}
 		if(patientList.isEmpty()) {
 			System.out.println("patient not found");
@@ -71,8 +72,7 @@ public class PatientRepo {
 	}
 
 	public Patient getPatient(String id) {
-		for (int i = 0; i < patientList.size(); i++) {
-			Patient pt = (Patient) patientList.get(i);
+		for (Patient pt : patientList) {
 			if (pt.id.equals(id)) {
 				return pt;
 			}
