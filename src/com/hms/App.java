@@ -1,17 +1,9 @@
 package com.hms;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 import java.util.Scanner;
 
-import com.hms.Patient.Gender;
-
 public class App {
-	//final static int EXIT = 16;
 	Scanner sc = new Scanner(System.in);
 	DoctorRepo drrepo = DoctorRepo.getInstance();
 	AppointmentRepo appRepo = AppointmentRepo.getInstance();
@@ -23,102 +15,103 @@ public class App {
 		App app = new App();
 		do {
 			result = ui.showMainMenue();
-
 			app.handleUserSelection(result);
 
-		} while (result != Constant.EXIT);
+		} while (result != Constant.SYSTEMEXIT);
 
 	}
-
-	void handleUserSelection(int val) {
-
-		switch (val) {
-
+	
+	void handleDoctorSelection(int val) {
+		switch(val) {
 		case 1:
 			ui.addDoctor(drrepo);
 			break;
 		case 2:
-			System.out.println("Enter the doctor id to remove that doctor");
-			String doctorid = sc.next();
-			Doctor dr = drrepo.getDoctor(doctorid);
-			if (dr != null) {
-				drrepo.remove(dr);
-				System.out.println("Doctor removed");
-			} else {
-				System.out.println("doctor not found");
-			}
-
+			ui.removeDoctor(drrepo);
 			break;
 		case 3:
+			ui.updateDoctorDetails(drrepo);
 			break;
 		case 4:
-			System.out.println("Enter doctor id to update");
-			String id1 = sc.next();
-			Doctor dr1 = drrepo.getDoctor(id1);
-			if (dr1 != null) {
-				ui.updateDoctorDetails(drrepo, dr1);
-			} else {
-				System.out.println("doctor not found");
-			}
-
-			break;
-		case 5:
 			drrepo.getAllDoctors();
 			break;
-		case 6:
+		case 5 : 
+			System.out.println("Doctor System Exit");
+			break;
+			default : 
+				System.out.println("Invalid Selection");
+				break;
+		}
+	}
+	
+	void handlePatientSelection(int val) {
+		switch(val) {
+		case 1:
 			ui.addPatient(patRepo);
 			break;
-		case 7:
-			System.out.println("enter patient id to remove patient");
-			String patientId = sc.next();
-			Patient pt = patRepo.getPatient(patientId);
-			if (pt != null) {
-				patRepo.remove(pt);
-				System.out.println("Patient removed");
-			} else {
-				System.out.println("Patient not found");
-			}
+		case 2:
+			ui.removePatient(patRepo);
+			break;
+		case 3:
+			ui.updatePatientDetails(patRepo);
+			break;
+		case 4:
+			patRepo.getAllPatient();
+			break;
+		case 5 : 
+			System.out.println("Patient System Exit");
+			break;
+			default : 
+				System.out.println("Invalid Selection");
+				break;
+		}
+	}
 
-			break;
-		case 8:
-			System.out.println("enter patient id to check");
-			String id = sc.next();
-			Patient pat = patRepo.getPatient(id);
-			if (pat != null) {
-				System.out.println(pat);
-			} else {
-				System.out.println("Patient not found");
-			}
-			break;
-		case 9:
-			System.out.println("Enter Patient id to update");
-			String pid = sc.next();
-			Patient pt1 = patRepo.getPatient(pid);
-			if (pt1 != null) {
-				ui.updatePatientDetails(patRepo, pt1);
-			} else {
-				System.out.println("patient not found");
-			}
-
-			break;
-		case 10:
-			patRepo.getAllPatients();
-			break;
-		case 11:
+	void handleAppointmentSelection(int val) {
+		switch(val) {
+		case 1:
 			ui.addAppointment(drrepo, patRepo, appRepo);
 			break;
-		case 12:
+		case 2:
+			ui.removeAppointment(appRepo);
 			break;
-		case 13:
-			break;
-		case 14:
+		case 3:
 			ui.updateAppointmentDetails(drrepo, patRepo, appRepo);
 			break;
-		case 15:
-			appRepo.getAllAppointments(drrepo, patRepo);
+		case 4:
+			appRepo.getAllAppointment();
 			break;
-		case Constant.EXIT:
-			System.out.println("application closed");
+		case 5 : 
+			System.out.println("Appointment System Exit");
+			break;
+			default : 
+				System.out.println("Invalid Selection");
+				break;
+		}
+	}
+	
+	void handleUserSelection(int val) {
+		switch (val) {
+		case 1:
+			int val1;
+			do {
+			val1 = ui.showDoctorMenu();
+			handleDoctorSelection(val1);
+			}while(val1 != Constant.DOCTOREXIT);
+		case 2:
+			int val2;
+			do {
+			val2 = ui.showPatientMenu();
+			handlePatientSelection(val2);
+			}while(val2 != Constant.PATIENTEXIT);
+		case 3:
+			int val3;
+			do{
+			val3 = ui.showAppointmentMenu();
+			handleAppointmentSelection(val3);
+			}while(val3 != Constant.APPOINTMENTEXIT);
+		case Constant.SYSTEMEXIT:
+			System.out.println("Application Closed");
 			break;
 		default:
 			System.out.println("Invalid Choice .. Try Again.");

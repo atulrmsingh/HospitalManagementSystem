@@ -17,7 +17,7 @@ public class PatientRepo {
 
 	}
 
-	public static PatientRepo getInstance() {
+	public static synchronized PatientRepo getInstance() {
 		if (instance == null) {
 			instance = new PatientRepo();
 

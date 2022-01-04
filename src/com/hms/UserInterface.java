@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import javax.print.Doc;
+
 import com.hms.Doctor.WeekDays;
 
 public class UserInterface {
@@ -25,70 +27,94 @@ public class UserInterface {
 	}
 
 	public int showMainMenue() {
-		System.out.println(
-				"Press 1.Add doctor\n" + "Press 2.Remove doctor\n" + "Press 3.Get Doctor\n" + "Press 4.Update Doctor\n"
-						+ "Press 5.Get all Doctor\n" + "Press 6.Add Patient\n" + "Press 7.Remove Patient\n"
-						+ "Press 8.Get Patient\n" + "Press 9.Update Patient\n" + "Press 10.Get all Patient\n"
-						+ "Press 11.Add Appointment\n" + "Press 12.Remove Appointment\n" + "Press 13.Get Appointment\n"
-						+ "Press 14.Update Appointment\n" + "Press 15.Get all Appointment\n" + "press "+Constant.EXIT+".exit");
-
+		System.out.println("Press 1.Doctor\n" + "Press 2.Patient\n" + "Press 3.Appointment\n"+ "press " + Constant.SYSTEMEXIT + ".exit");
 		int val = sc.nextInt();
 		return val;
 	}
+	
+	public int showDoctorMenu() {
+		System.out.println("Press 1. Add Doctor\n"+ "Press 2. Remove Doctor\n"+"Press 3. Update Doctor\n"+ "Press 4. Get All Doctors\n"+ "Press 5. Back To Main Menu");
+		int option = sc.nextInt();
+		return option;
+	}
 
+	public int showPatientMenu() {
+		System.out.println("Press 1. Add Patient\n"+ "Press 2. Remove Patient\n"+"Press 3. Update Patient\n"+ "Press 4. Get All Patients\n"+ "Press 5. Back To Main Menu");
+		int option = sc.nextInt();
+		return option;
+	}
+
+	public int showAppointmentMenu() {
+		System.out.println("Press 1. Add Appointment\n"+ "Press 2. Remove Appointment\n"+"Press 3. Update Appointment\n"+ "Press 4. Get All Appointments\n"+ "Press 5. Back To Main Menu");
+		int option = sc.nextInt();
+		return option;
+	}
+	
+	
 	public void addDoctor(DoctorRepo drrepo) {
 		Doctor dr = new Doctor();
 		System.out.println("enter doctor id");
 		dr.id = sc.next();
-		System.out.println("enter doctor name");
-		dr.name = sc.next();
-		System.out.println("enter doctor Specialist");
-		dr.specialist = sc.next();
-		System.out.println("enter doctor mobile");
-		dr.mobile = sc.nextLong();
-		System.out.println("enter email");
-		dr.email = sc.next();
+		if (!drrepo.isDoctorAvailable(dr.id)) {
+			System.out.println("enter doctor name");
+			dr.name = sc.next();
+			System.out.println("enter doctor Specialist");
+			dr.specialist = sc.next();
+			System.out.println("enter doctor mobile");
+			dr.mobile = sc.nextLong();
+			System.out.println("enter email");
+			dr.email = sc.next();
+			dr.availability = new HashMap<WeekDays, String>();
+			dr.availability.put(Doctor.WeekDays.SUNDAY, " 10 am to 12 pm");
+			dr.availability.put(Doctor.WeekDays.MONDAY, " 11 am to 12 pm");
+			dr.availability.put(Doctor.WeekDays.TUESDAY, " 12 am to 1 pm");
+			dr.availability.put(Doctor.WeekDays.WEDNESDAY, " 10 am to 12 pm");
+			dr.availability.put(Doctor.WeekDays.THURSDAY, " 10 am to 12 pm");
+			dr.availability.put(Doctor.WeekDays.FRIDAY, " 10 am to 12 pm");
+			dr.availability.put(Doctor.WeekDays.SATURDAY, " 10 am to 12 pm");
 
-		dr.availability = new HashMap<WeekDays, String>();
-		dr.availability.put(Doctor.WeekDays.SUNDAY, " 10 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.MONDAY, " 11 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.TUESDAY, " 12 am to 1 pm");
-		dr.availability.put(Doctor.WeekDays.WEDNESDAY, " 10 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.THURSDAY, " 10 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.FRIDAY, " 10 am to 12 pm");
-		dr.availability.put(Doctor.WeekDays.SATURDAY, " 10 am to 12 pm");
-
-		drrepo.add(dr);
+			drrepo.add(dr);
+		} else {
+			System.out.println("Doctor id already exists");
+		}
 	}
 
-	public void updateDoctorDetails(DoctorRepo drrepo, Doctor dr1) {
-		System.out.println("Kindly enter the updated details for doctor id :");
-		System.out.println("Press 1. Update Name\n" + "Press 2.Update specialist\n" + "Press 3.Update Mobile\n"
-				+ "Press 4.Update email");
-		int numSelected = sc.nextInt();
-		switch (numSelected) {
-		case 1:
-			System.out.println("Enter name to update");
-			dr1.name = sc.next();
-			break;
-		case 2:
-			System.out.println("Enter specialist to update");
-			dr1.specialist = sc.next();
-			break;
-		case 3:
-			System.out.println("Enter mobile to update");
-			dr1.mobile = sc.nextLong();
-			break;
-		case 4:
-			System.out.println("Enter email to update");
-			dr1.email = sc.next();
-			break;
-		case Constant.DOCTOREXIT:
-		break;
-		default:
-			System.out.println("invalid selection");
+	public void updateDoctorDetails(DoctorRepo drrepo) {
+		System.out.println("Enter Doctor Id to update : ");
+		String drId = sc.next();
+		Doctor dr1 = drrepo.getDoctor(drId);
+		if(dr1 != null) {
+			System.out.println("Kindly enter the updated details for doctor id :");
+			System.out.println("Press 1. Update Name\n" + "Press 2.Update specialist\n" + "Press 3.Update Mobile\n"
+					+ "Press 4.Update email");
+			int numSelected = sc.nextInt();
+			switch (numSelected) {
+			case 1:
+				System.out.println("Enter name to update");
+				dr1.name = sc.next();
+				break;
+			case 2:
+				System.out.println("Enter specialist to update");
+				dr1.specialist = sc.next();
+				break;
+			case 3:
+				System.out.println("Enter mobile to update");
+				dr1.mobile = sc.nextLong();
+				break;
+			case 4:
+				System.out.println("Enter email to update");
+				dr1.email = sc.next();
+				break;
+			case Constant.UPDATEDOCTOREXIT:
+				break;
+			default:
+				System.out.println("invalid selection");
+			}
+			System.out.println("Details Updated");
+		}else {
+			System.out.println("No Doctor found");
 		}
-		System.out.println("Details Updated");
+		
 
 	}
 
@@ -116,51 +142,57 @@ public class UserInterface {
 		patRepo.add(pt);
 	}
 
-	public void updatePatientDetails(PatientRepo patRepo, Patient pt1) {
-		System.out.println("Kindly enter the updated details for Patient id :");
-		System.out.println("Press 1. Update Name\n" + "Press 2.Update age\n" + "Press 3.Update gender\n"
-				+ "Press 4.Update mobile\n" + "Press 5.Update email\n" + "Press 6.Update city\n"
-				+ "Press 7.Update Disease");
-		int numSelected = sc.nextInt();
-		switch (numSelected) {
-		case 1:
-			System.out.println("Enter name to update");
-			pt1.name = sc.next();
-			break;
-		case 2:
-			System.out.println("Enter age to update");
-			pt1.age = sc.nextInt();
-			break;
-		case 3:
-			System.out.println(
-					"Update Gender : \n" + "Press 1 for Male\n" + "Press 2 for Female\n" + "Press 3 fro others");
-			int gender = sc.nextInt();
-			pt1 = patRepo.setGender(pt1, gender);
-			break;
-		case 4:
-			System.out.println("Enter mobile to update");
-			pt1.mobile = sc.nextLong();
-			break;
-		case 5:
-			System.out.println("Enter email to update");
-			pt1.email = sc.next();
-			break;
-		case 6:
-			System.out.println("Enter city to update");
-			pt1.city = sc.next();
-			break;
-		case 7:
-			System.out.println("Enter Disease to update");
-			pt1.Disease = sc.next();
-			break;
-		case Constant.PATIENTEXIT:
-			break;
+	public void updatePatientDetails(PatientRepo patRepo) {
+		System.out.println("Enter Patient Id to update : ");
+		String ptId = sc.next();
+		Patient pt1 = patRepo.getPatient(ptId);
+		if(pt1 != null) {
+			System.out.println("Kindly enter the updated details for Patient id :");
+			System.out.println("Press 1. Update Name\n" + "Press 2.Update age\n" + "Press 3.Update gender\n"
+					+ "Press 4.Update mobile\n" + "Press 5.Update email\n" + "Press 6.Update city\n"
+					+ "Press 7.Update Disease");
+			int numSelected = sc.nextInt();
+			switch (numSelected) {
+			case 1:
+				System.out.println("Enter name to update");
+				pt1.name = sc.next();
+				break;
+			case 2:
+				System.out.println("Enter age to update");
+				pt1.age = sc.nextInt();
+				break;
+			case 3:
+				System.out.println(
+						"Update Gender : \n" + "Press 1 for Male\n" + "Press 2 for Female\n" + "Press 3 fro others");
+				int gender = sc.nextInt();
+				pt1 = patRepo.setGender(pt1, gender);
+				break;
+			case 4:
+				System.out.println("Enter mobile to update");
+				pt1.mobile = sc.nextLong();
+				break;
+			case 5:
+				System.out.println("Enter email to update");
+				pt1.email = sc.next();
+				break;
+			case 6:
+				System.out.println("Enter city to update");
+				pt1.city = sc.next();
+				break;
+			case 7:
+				System.out.println("Enter Disease to update");
+				pt1.Disease = sc.next();
+				break;
+			case Constant.UPDATEPATIENTEXIT:
+				break;
 
-		default:
-			System.out.println("invalid selection");
-		}
-		System.out.println("Details Updated");
-
+			default:
+				System.out.println("invalid selection");
+			}
+			System.out.println("Details Updated");
+		}else {
+			System.out.println("No Patient found");
+		}		
 	}
 
 	public void addAppointment(DoctorRepo drrepo, PatientRepo patrepo, AppointmentRepo appRepo) {
@@ -231,7 +263,7 @@ public class UserInterface {
 					System.out.println("Invalid Date");
 				}
 				break;
-			case Constant.APPOINTMENTEXIT:
+			case Constant.UPDATEAPPOINTMENTEXIT:
 				break;
 			}
 			System.out.println("Details updated");
@@ -241,5 +273,40 @@ public class UserInterface {
 		}
 
 	}
+	
+	public void removeDoctor(DoctorRepo drrepo) {
+		System.out.println("Enter Doctor Id to remove : ");
+		String drId = sc.next();
+		Doctor dr = drrepo.getDoctor(drId);
+		if(dr != null) {
+			drrepo.remove(dr);
+			System.out.println("Doctor removed");
+		}else {
+			System.out.println("No Doctor found");
+		}
+	}
 
+	public void removePatient(PatientRepo patRepo) {
+		System.out.println("Enter Patient Id to remove : ");
+		String ptId = sc.next();
+		Patient pt = patRepo.getPatient(ptId);
+		if(pt != null) {
+			patRepo.remove(pt);
+			System.out.println("Patient removed");
+		}else {
+			System.out.println("No Patient found");
+		}
+	}
+	
+	public void removeAppointment(AppointmentRepo appRepo) {
+		System.out.println("Enter Appointment Id to remove : ");
+		String appId = sc.next();
+		Appointment app = appRepo.getAppointment(appId);
+		if(app != null) {
+			appRepo.remove(app);
+			System.out.println("Patient removed");
+		}else {
+			System.out.println("No Patient found");
+		}
+	}
 }

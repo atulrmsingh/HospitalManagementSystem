@@ -15,7 +15,7 @@ public class AppointmentRepo {
 
 	}
 
-	public static AppointmentRepo getInstance() {
+	public static synchronized AppointmentRepo getInstance() {
 		if (instance == null) {
 			instance = new AppointmentRepo();
 
@@ -27,6 +27,12 @@ public class AppointmentRepo {
 	public void add(Appointment apt) {
 
 		appointmentList.add(apt);
+
+	}
+	
+	public void remove(Appointment apt) {
+
+		appointmentList.remove(apt);
 
 	}
 

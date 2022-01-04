@@ -13,7 +13,7 @@ public class DoctorRepo {
 
 	}
 
-	public static DoctorRepo getInstance() {
+	public static synchronized DoctorRepo getInstance() {
 		if (instance == null) {
 			instance = new DoctorRepo();
 		}
